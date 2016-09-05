@@ -389,7 +389,7 @@ describe('parsing', function () {
             verifyComment(comments[0], 'FIXME', 31, 'we now exit the program');
         });
     });
-    
+
     describe('ss', function () {
         it('handle <%-- --%> and <!-- --> comments', function () {
             var file = getFixturePath('silverstripe.ss');
@@ -545,6 +545,32 @@ describe('parsing', function () {
             var comments = getComments(file);
             comments.should.have.length(1);
             verifyComment(comments[0], 'FIXME', 2, 'Make it better', 'tregusti');
+        });
+    });
+
+    describe('markdown', function () {
+        it('handle list items', function () {
+            var file = getFixturePath('markdown.md');
+            var comments = getComments(file);
+            should.exist(comments);
+            comments.should.have.length(4);
+            verifyComment(comments[0], 'TODO', 3, 'this will appear as todo');
+            verifyComment(comments[1], 'TODO', 4, 'as well as this');
+            verifyComment(comments[2], 'TODO', 8, 'this line will be used');
+            verifyComment(comments[3], 'TODO', 12, 'this also works');
+        });
+    });
+
+    describe('markdown', function () {
+        it('parse {{! }} and {{!-- --}} comments', function () {
+            var file = getFixturePath('hogan.hgn');
+            var comments = getComments(file);
+            should.exist(comments);
+            comments.should.have.length(4);
+            verifyComment(comments[0], 'TODO', 2, 'only output this author names if an author exists');
+            verifyComment(comments[1], 'FIXME', 8, 'This comment will not be in the output');
+            verifyComment(comments[2], 'TODO', 13, 'Multiple line comment');
+            verifyComment(comments[3], 'TODO', 13, 'and again');
         });
     });
 });
